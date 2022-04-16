@@ -1,34 +1,87 @@
 package machine
 
-// const vals for one cup of coffee
-const val WATER = 200
-const val MILK = 50
-const val COFFEE_BEANS = 15
+// const vals for one cup of espresso
+const val ESP_WATER = 250
+const val ESP_COFFEE_BEANS = 16
+const val ESP_COST = 4
+// const vals for one cup of latte
+const val LAT_WATER = 350
+const val LAT_MILK = 75
+const val LAT_COFFEE_BEANS = 20
+const val LAT_COST = 7
+// const vals for one cup of cappuccino
+const val CAP_WATER = 200
+const val CAP_MILK = 100
+const val CAP_COFFEE_BEANS = 12
+const val CAP_COST = 6
+
+// function that shows the info about coffee machine
+fun showInfo() {
+    println("The coffee machine has:\n" +
+            "$waterAmount ml of water\n" +
+            "$milkAmount ml of milk\n" +
+            "$coffeeBeansAmount g of coffee beans\n" +
+            "$disposableCups disposable cups\n" +
+            "\$$money of money")
+}
+fun buy() {
+    println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ")
+    when (readln().toInt()) {
+        1 -> {
+            // update info
+            waterAmount -= ESP_WATER
+            coffeeBeansAmount -= ESP_COFFEE_BEANS
+            disposableCups -= 1
+            money += ESP_COST
+        }
+        2 -> {
+            // update info
+            waterAmount -= LAT_WATER
+            milkAmount -= LAT_MILK
+            coffeeBeansAmount -= LAT_COFFEE_BEANS
+            disposableCups -= 1
+            money += LAT_COST
+        }
+        3 -> {
+            // update info
+            waterAmount -= CAP_WATER
+            milkAmount -= CAP_MILK
+            coffeeBeansAmount -= CAP_COFFEE_BEANS
+            disposableCups -= 1
+            money += CAP_COST
+        }
+    }
+}
+fun fill() {
+    print("Write how many ml of water do you want to add: ")
+    waterAmount += readln().toInt()
+    print("Write how many ml of milk do you want to add: ")
+    milkAmount += readln().toInt()
+    print("Write how many grams of coffee beans do you want to add: ")
+    coffeeBeansAmount += readln().toInt()
+    print("Write how many disposable cups of coffee do you want to add: ")
+    disposableCups += readln().toInt()
+}
+fun take() {
+    println("I gave you \$$money")
+    money = 0
+}
+
+// amount of supplies at the beginning
+var waterAmount: Int = 400
+var milkAmount: Int = 540
+var coffeeBeansAmount: Int = 120
+var disposableCups: Int = 9
+var money: Int = 550
 
 fun main() {
-    println("Starting to make a coffee\n" +
-            "Grinding coffee beans\n" +
-            "Boiling water\n" +
-            "Mixing boiled water with crushed coffee beans\n" +
-            "Pouring coffee into the cup\n" +
-            "Pouring some milk into the cup\n" +
-            "Coffee is ready!")
-
-    print("Write how many ml of water the coffee machine has: ")
-    val waterAmount: Int = readln().toInt()
-    print("Write how many ml of milk the coffee machine has: ")
-    val milkAmount: Int = readln().toInt()
-    print("Write how many grams of coffee beans the coffee machine has: ")
-    val coffeeBeansAmount: Int = readln().toInt()
-    print("Write how many cups of coffee you will need: ")
-    val amount: Int = readln().toInt()
-    // how many cups can be made with this amount
-    val cups = minOf(waterAmount / WATER, milkAmount / MILK, coffeeBeansAmount / COFFEE_BEANS)
-    if (cups > amount) {
-        println("Yes, I can make that amount of coffee (and even ${cups - amount} more than that)")
-    } else if (cups == amount) {
-        println("Yes, I can make that amount of coffee")
-    } else {
-        println("No, I can make only $cups cups of coffee")
+    showInfo()
+    print("Write action (buy, fill, take): ")
+    // read the action and decide what to do
+    when (readln()) {
+        "buy" -> buy()
+        "fill" -> fill()
+        "take" -> take()
     }
+    showInfo()
 }
