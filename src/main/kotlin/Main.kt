@@ -16,7 +16,7 @@ const val CAP_COFFEE_BEANS = 12
 const val CAP_COST = 6
 
 // function that shows the info about coffee machine
-fun showInfo() {
+fun remaining() {
     println("The coffee machine has:\n" +
             "$waterAmount ml of water\n" +
             "$milkAmount ml of milk\n" +
@@ -25,31 +25,61 @@ fun showInfo() {
             "\$$money of money")
 }
 fun buy() {
-    println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ")
-    when (readln().toInt()) {
-        1 -> {
-            // update info
-            waterAmount -= ESP_WATER
-            coffeeBeansAmount -= ESP_COFFEE_BEANS
-            disposableCups -= 1
-            money += ESP_COST
+    print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:  ")
+    when (readln()) {
+        "1" -> {
+            if (waterAmount < ESP_WATER) {
+                println("Sorry, not enough water!")
+            } else if (coffeeBeansAmount < ESP_COFFEE_BEANS) {
+                println("Sorry, not enough coffee beans!")
+            } else if (disposableCups <= 0) {
+                println("Sorry, not enough cups!")
+            } else {
+                println("I have enough resources, making you a coffee!")
+                waterAmount -= ESP_WATER
+                coffeeBeansAmount -= ESP_COFFEE_BEANS
+                disposableCups -= 1
+                money += ESP_COST
+            }
         }
-        2 -> {
-            // update info
-            waterAmount -= LAT_WATER
-            milkAmount -= LAT_MILK
-            coffeeBeansAmount -= LAT_COFFEE_BEANS
-            disposableCups -= 1
-            money += LAT_COST
+        "2" -> {
+            if (waterAmount < LAT_WATER) {
+                println("Sorry, not enough water!")
+            } else if (milkAmount < LAT_MILK) {
+                println("Sorry, not enough milk!")
+            } else if (coffeeBeansAmount < LAT_COFFEE_BEANS) {
+                println("Sorry, not enough coffee beans!")
+            } else if (disposableCups <= 0) {
+                println("Sorry, not enough cups!")
+            } else {
+                println("I have enough resources, making you a coffee!")
+                waterAmount -= LAT_WATER
+                milkAmount -= LAT_MILK
+                coffeeBeansAmount -= LAT_COFFEE_BEANS
+                disposableCups -= 1
+                money += LAT_COST
+            }
         }
-        3 -> {
-            // update info
-            waterAmount -= CAP_WATER
-            milkAmount -= CAP_MILK
-            coffeeBeansAmount -= CAP_COFFEE_BEANS
-            disposableCups -= 1
-            money += CAP_COST
+        "3" -> {
+            if (waterAmount < CAP_WATER) {
+                println("Sorry, not enough water!")
+            } else if (milkAmount < CAP_MILK) {
+                println("Sorry, not enough milk!")
+            } else if (coffeeBeansAmount < CAP_COFFEE_BEANS) {
+                println("Sorry, not enough coffee beans!")
+            } else if (disposableCups <= 0) {
+                println("Sorry, not enough cups!")
+            } else {
+                println("I have enough resources, making you a coffee!")
+                waterAmount -= CAP_WATER
+                milkAmount -= CAP_MILK
+                coffeeBeansAmount -= CAP_COFFEE_BEANS
+                disposableCups -= 1
+                money += CAP_COST
+            }
         }
+        // returning to main menu
+        "back" -> return
     }
 }
 fun fill() {
@@ -75,13 +105,15 @@ var disposableCups: Int = 9
 var money: Int = 550
 
 fun main() {
-    showInfo()
-    print("Write action (buy, fill, take): ")
-    // read the action and decide what to do
-    when (readln()) {
-        "buy" -> buy()
-        "fill" -> fill()
-        "take" -> take()
+    while (true) {
+        print("Write action (buy, fill, take, remaining, exit): ")
+        when (readln()) {
+            "buy" -> buy()
+            "fill" -> fill()
+            "take" -> take()
+            "remaining" -> remaining()
+            "exit" -> break
+        }
+        println() //print blank line as separator
     }
-    showInfo()
 }
